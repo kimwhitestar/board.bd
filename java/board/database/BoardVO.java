@@ -1,4 +1,4 @@
-package board;
+package board.database;
 
 public class BoardVO {
 	private int idx;

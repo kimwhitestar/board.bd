@@ -40,4 +40,4 @@ insert into board values (default, '박김이10', '게시판10', 'pkl10@naver.co
 insert into board values (default, '박김이11', '게시판11', 'pkl11@naver.com', 
 'http://naver.com/pkl11', '게시판 테스트11', default, default, 'localhost', default, 'pkl11');
 
-select * from board;
+select * from board order by idx desc
