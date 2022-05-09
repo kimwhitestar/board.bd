@@ -24,7 +24,7 @@
       </li>
 <%	if (99 != level ) { %>
       <li class="nav-item font-weight-bold">
-        <a class="nav-link" href="<%=request.getContextPath()%>/board.bd">BOARD</a>
+        <a class="nav-link" href="<%=request.getContextPath()%>/boardList.bd">BOARD</a>
       </li>
 <%	} %>
 
