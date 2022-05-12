@@ -11,13 +11,13 @@ import board.database.BoardDAO;
 import board.database.BoardVO;
 import common.Paging;
 
-public class BoardListCommand implements BoardInterface {
+public class BoardSearchingCommand implements BoardInterface {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		BoardDAO dao = new BoardDAO();
-//		HttpSession session = request.getSession();
-//		String sMid = (String)session.getAttribute("sMid");
+		String searchCondition = request.getParameter("searchCondition");
+		String searchString = request.getParameter("searchString");
 		
 		//페이징 설정하기 
 		int pageNo = request.getParameter("pageNo")==null ? 1 : Integer.parseInt(request.getParameter("pageNo"));//현 페이지
@@ -30,7 +30,20 @@ public class BoardListCommand implements BoardInterface {
 		paging.setPaging(pageNo, totalRecordSize, pageSize, blockingSize);
 		
 		//한 페이징에 표시할 레코드 검색
-		List<BoardVO> vos = dao.searchBoardList(paging.getStartIndexNo(), paging.getPageSize());
+		List<BoardVO> vos = dao.searchBoardListForCondition(searchCondition, searchString);
+		
+		String searchTitle = "";
+		if(searchCondition.equals("title")) searchTitle = "제목";
+		else if(searchCondition.equals("nickName")) searchTitle = "닉네임";
+		else searchTitle = "내용";
+		
 		request.setAttribute("vos", vos);
+		request.setAttribute("pageNo", pageNo);
+		request.setAttribute("pageSize", pageSize);
+		request.setAttribute("searchTitle", searchTitle);
+		request.setAttribute("searchCondition", searchCondition);
+		request.setAttribute("searchString", searchString);
+		request.setAttribute("searchCount", vos.size());
+		
 	}
 }

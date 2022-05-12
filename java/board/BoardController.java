@@ -2,7 +2,6 @@ package board;
 
 import java.io.IOException;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -37,8 +36,8 @@ public class BoardController extends HttpServlet {
 		}
 		//글쓰기
 		else if (com.equals("boardInput")) {
-//			command = new BoardInputCommand();
-//			command.execute(request, response);
+			command = new BoardInputCommand();
+			command.execute(request, response);
 			viewPage += "/board/boardInput.jsp";
 		}
 		//글쓰기OK
@@ -47,6 +46,38 @@ public class BoardController extends HttpServlet {
 			command.execute(request, response);
 			viewPage = "/message/message.jsp";
 		}
+		//게시글 수정
+		else if (com.equals("boardUpdate")) {
+			command = new BoardUpdateCommand();
+			command.execute(request, response);
+			viewPage += "/board/boardUpdate.jsp";
+		}
+		//게시글 수정Ok
+		else if (com.equals("boardUpdateOk")) {
+			command = new BoardUpdateCommandOk();
+			command.execute(request, response);
+			viewPage = "/message/message.jsp";
+		}
+		//게시글 삭제Ok
+		else if (com.equals("boardDeleteOk")) {
+			command = new BoardDeleteCommandOk();
+			command.execute(request, response);
+			viewPage = "/message/message.jsp";
+		}
+		//게시글 내용 조회
+		else if (com.equals("boardDetail")) {
+			command = new BoardDetailCommand();
+			command.execute(request, response);
+			viewPage += "/board/boardDetail.jsp";
+		}
+		//게시판 목록 - 조건검색
+		else if (com.equals("boardSearching")) {
+			command = new BoardSearchingCommand();
+			command.execute(request, response);
+			viewPage += "/board/boardList.jsp";
+		}
+			
+			
 
 		request.getRequestDispatcher(viewPage).forward(request, response);
 	}
