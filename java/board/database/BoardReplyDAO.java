@@ -45,7 +45,6 @@ public class BoardReplyDAO {
 		}
 		return vos;
 	}
-	
 	//게시글 등록
 	public int insert(BoardReplyVO vo) {
 		int res = 0;
@@ -65,9 +64,8 @@ public class BoardReplyDAO {
 		}
 		return res;
 	}
-
 	//게시글 수정
-	public int update(BoardReplyVO vo) {
+	public int update(String content, String hostIp, int idx, String mid) {
 		int res = 0;
 		try {
 			sql = "update into boardreply set content = ?, hostIp = ? where idx = ? and mid = ? ";
@@ -84,7 +82,6 @@ public class BoardReplyDAO {
 		}
 		return res;	
 	}
-
 	//게시글 삭제
 	public int delete(int idx, String mid) {
 		int res = 0;
