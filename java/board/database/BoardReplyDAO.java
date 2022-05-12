@@ -17,24 +17,6 @@ public class BoardReplyDAO {
 	private BoardReplyVO vo = null;
 	private String sql = new String("");
 	
-	//페이징 총 레코드(게시판목록)건수
-	public int totRecCnt() {
-		int totRecCnt = 0;
-		try {
-			sql = "select count(*) as totRecCnt from boardreply";
-			pstmt = conn.prepareStatement(sql);
-			rs = pstmt.executeQuery();
-			rs.next(); //ResultSet레코드움직이기(count함수는 무조건 0값조차 가져옴)
-			totRecCnt = rs.getInt("totRecCnt");
-		} catch (SQLException e) {
-			e.getMessage();
-		} finally {
-			instance.rsClose();
-			instance.pstmtClose();
-		}
-		return totRecCnt;
-	}
-	
 	//게시판 목록 조회
 	public List<BoardReplyVO> searchBoardReplyList(int boardIdx) {
 		List<BoardReplyVO> vos = new ArrayList<>();
@@ -49,6 +31,8 @@ public class BoardReplyDAO {
 				vo.setMid(rs.getString("mid"));
 				vo.setNickName(rs.getString("nickName"));
 				vo.setContent(rs.getString("content"));
+				vo.setStrWdate(rs.getString("wDate"));
+				vo.setIntWDate(new TimeDiff().timeDiff(vo.getStrWdate()));//오늘날짜와 글쓴날짜의 시간차이
 				vo.setwDate(rs.getString("wDate"));
 				vo.setHostIp(rs.getString("hostIp"));
 				vos.add(vo);
@@ -62,39 +46,6 @@ public class BoardReplyDAO {
 		return vos;
 	}
 	
-	public BoardReplyVO search(int boardIdx) {
-		try {
-			sql = "SELECT "
-					+ "		IDX, "
-					+ "		NICKNAME, "
-					+ "		CONTENT, "
-					+ "		WDATE, "
-					+ "		HOSTIP "
-					+ "FROM "
-					+ "		BOARDREPLY "
-					+ "WHERE"
-					+ "		BOARDIDX = ?";
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setInt(1, boardIdx);
-			rs = pstmt.executeQuery();
-			if (rs.next()) {
-				vo = new BoardReplyVO();
-				vo.setIdx(rs.getInt("idx"));
-				vo.setMid(rs.getString("mid"));
-				vo.setNickName(rs.getString("nickName"));
-				vo.setContent(rs.getString("content"));
-				vo.setwDate(rs.getString("wDate"));
-				vo.setHostIp(rs.getString("hostIp"));
-			}
-		} catch (SQLException e) {
-			System.out.println("SQL 에러 : " + e.getMessage());
-		} finally {
-			instance.pstmtClose();
-			instance.rsClose();
-		}
-		return vo;
-	}
-
 	//게시글 등록
 	public int insert(BoardReplyVO vo) {
 		int res = 0;
@@ -119,11 +70,12 @@ public class BoardReplyDAO {
 	public int update(BoardReplyVO vo) {
 		int res = 0;
 		try {
-			sql = "update into boardreply set content = ?, hostIp = ? where idx = ? ";
+			sql = "update into boardreply set content = ?, hostIp = ? where idx = ? and mid = ? ";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, vo.getContent());
 			pstmt.setString(2, vo.getHostIp());
 			pstmt.setInt(3, vo.getIdx());
+			pstmt.setString(4, vo.getMid());
 			res = pstmt.executeUpdate();
 		} catch(SQLException e) {
 			System.out.println("SQL 에러 : " + e.getMessage());
@@ -134,12 +86,13 @@ public class BoardReplyDAO {
 	}
 
 	//게시글 삭제
-	public int delete(int idx) {
+	public int delete(int idx, String mid) {
 		int res = 0;
 		try {
-			sql = "delete from boardreply where idx =  ? ";
+			sql = "delete from boardreply where idx = ? and mid = ? ";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, idx);
+			pstmt.setString(2, mid);
 			res = pstmt.executeUpdate();
 		} catch(SQLException e) {
 			System.out.println("SQL 에러 : " + e.getMessage());
