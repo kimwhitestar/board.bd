@@ -11,7 +11,7 @@
     <%@ include file="/include/bs4.jsp" %>
     <script>
     	'use strict';
-    	function checkReply() {
+    	function checkReplyInput() {
     		let content = $("#content").val();
     		if("" == content.trim()) {
     			alert("댓글을 입력하세요");
@@ -26,7 +26,7 @@
     		
     		$.ajax({
     			type:		"post",
-    			url:		"${ctxPath}/boardReplyInput.bd",
+    			url:		"${ctxPath}/boardReplyInput",
     			data:		param,
     			success:	function(res) {
     				if("1"==res) location.reload();//전체화면 reload 많이 쓰면 화면깜박 생기므로 많이 쓰지않도록!
@@ -38,6 +38,39 @@
     		});
     		//ajaxSubmit();
     	}
+    	function checkReplyUpdate(idx, content, mid) {
+    		if (!confirm('댓글을 수정하겠습니까?')) return;
+    		
+    		$.ajax({
+    			type:		"post",
+    			url:		"${ctxPath}/boardReplyUpdate",
+    			data:		{content : content, hostIp : ${pageContext.request.remoteAddr}, idx : idx, mid : mid},
+    			success:	function(res) {
+    				if("1"==res) location.reload();//전체화면 reload 많이 쓰면 화면깜박 생기므로 많이 쓰지않도록!
+    				else alert('댓글이 수정되지 않았습니다');
+    			},
+    			error:		function() {
+    				alert('요청 오류~~');
+    			}
+    		});
+    	}
+    	function checkReplyDelete(idx, mid) {
+    		if (!confirm('댓글을 삭제하겠습니까?')) return;
+    		
+    		$.ajax({
+    			type:		"post",
+    			url:		"${ctxPath}/boardReplyDelete",
+    			data:		{idx : idx, mid : mid},
+    			success:	function(res) {
+    				if("1"==res) location.reload();//전체화면 reload 많이 쓰면 화면깜박 생기므로 많이 쓰지않도록!
+    				else alert('댓글이 삭제되지 않았습니다');
+    			},
+    			error:		function() {
+    				alert('요청 오류~~');
+    			}
+    		});
+    	}
+    	
     	function checkRecommend() {
     		$.ajax({
     			type: 		"post",
@@ -186,9 +219,23 @@
 		</tr>
 <c:forEach var="replyVO" items="${replyVOS}">
 		<tr>
-			<td class="text-left">${replyVO.nickName}</td>
-			<td class="text-left">${fn:replace(replyVO.content, 'newLine', '<br>')}</td>
-			<td>${replyVO.wDate}</td>
+			<td class="text-left">
+				${replyVO.nickName}
+				<c:if test="${sMid == replyVO.mid}">
+					<a href="javascript:checkReplyUpdate(${replyVO.idx}, ${replyVO.content}, ${replyVO.mid})" class="btn btn-info btn-sm" ><font color="blue">✂</font></a>
+				</c:if>
+				<c:if test="${sMid == replyVO.mid || 0 == sLevel}">
+					<a href="javascript:checkReplyDelete(${replyVO.idx}, ${replyVO.mid})" class="btn btn-info btn-sm" ><font color="red">❌/font></a>
+				</c:if>
+			</td>
+			<td class="text-left">
+				${fn:replace(replyVO.content, 'newLine', '<br>')}
+				<c:if test="${replyVO.intWDate <= 24}"><font color="red"> new </font></c:if>
+			</td>
+			<td>
+				<c:if test="${replyVO.intWDate <= 24}"><c:out value="${fn:substring(replyVO.wDate, 11, 19)}"/></c:if>
+				<c:if test="${replyVO.intWDate > 24}"><c:out value="${fn:substring(replyVO.wDate, 0, 10)}"/></c:if>
+			</td>
 			<td>${replyVO.hostIp}</td>
 		</tr>
 </c:forEach>		
@@ -202,7 +249,7 @@
 				<textarea rows="3" name="content" class="form-control"></textarea>
 			</td>
 			<td style="width:15%">
-				<p><input type="button" value="댓글" onclick="checkReply()" class="btn btn-info btn-sm"/></p>
+				<p><input type="button" value="댓글등록" onclick="checkReplyInput()" class="btn btn-info btn-sm"/></p>
 				<p>작성자 : ${sNickName}</p>
 				<br>
 			</td>
