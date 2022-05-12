@@ -1,5 +1,21 @@
 show tables;
 
+create table board2 (
+	idx 		int not null auto_increment, 	/* 게시글 고유번호 */
+	nickName 	varchar(20) not null,			/* 게시글을 올린 사람의 닉네임 */
+	title		varchar(100) not null,			/* 게시글의 글 제목 */
+	email 		varchar(100), 					/* 글쓴이의 이메일 주소 */
+	homepage	varchar(100),					/* 글쓴이의 홈페이지(블로그) 주소 */
+	content		text not null,					/* 글 내용 */
+	wDate		datetime default now(),			/* 글 올린 날짜 */
+	readNum		int default 0, 					/* 글 조회수 누적처리 */
+	hostIp		varchar(50) not null,			/* client 접속 IP */
+	recommendNum	int default 0,			/* '좋아요' 횟수 누적처리 */
+	mid			varchar(20) not null,			/* 회원 아이디(게시글 조회시 사용) */
+
+	primary key(idx)							/* 게시판의 기본키 : 고유번호 */
+);
+
 create table board (
 	idx 		int not null auto_increment, 	/* 게시글 고유번호 */
 	nickName 	varchar(20) not null,			/* 게시글을 올린 사람의 닉네임 */
@@ -10,9 +26,13 @@ create table board (
 	wDate		datetime default now(),			/* 글 올린 날짜 */
 	readNum		int default 0, 					/* 글 조회수 누적처리 */
 	hostIp		varchar(50) not null,			/* client 접속 IP */
-	recommendNum		int default 0,			/* '좋아요' 횟수 누적처리 */
+	recommendNum	int default 0,			/* '좋아요' 횟수 누적처리 */
 	mid			varchar(20) not null,			/* 회원 아이디(게시글 조회시 사용) */
+	
 	primary key(idx)							/* 게시판의 기본키 : 고유번호 */
+	foreign key(boardIdx) references board(idx) /*board테이블의 idx를 boardReply테이블의 외래키로 설정 */
+	on update cascade							/* 원본테이블에서의 pk변경에 영향받음 */
+	on delete restrict							/* 원본테이블에서의 pk삭제금지 */
 );
 
 desc board;
@@ -41,3 +61,4 @@ insert into board values (default, '박김이11', '게시판11', 'pkl11@naver.co
 'http://naver.com/pkl11', '게시판 테스트11', default, default, 'localhost', default, 'pkl11');
 
 select * from board order by idx desc
+

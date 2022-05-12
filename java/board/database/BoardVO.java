@@ -12,7 +12,15 @@ public class BoardVO {
 	private String hostIp;
 	private int recommendNum;
 	private String mid;
-
+	//날짜형식필드를 '문자'와 '숫자'로 나눔
+	private String strWdate;//문자형날짜
+	private int intWDate;//오늘날짜와 글쓴날짜의 시간차
+	//이전글, 다음글
+	private int preIdx;
+	private int nextIdx;
+	private String preTitle;
+	private String nextTitle;
+	
 	public int getIdx() {
 		return idx;
 	}
@@ -79,6 +87,47 @@ public class BoardVO {
 	public void setMid(String mid) {
 		this.mid = mid;
 	}
-	
-	
+	public String getStrWdate() {
+		return strWdate;
+	}
+	public void setStrWdate(String strWdate) {
+		this.strWdate = strWdate;
+	}
+	public int getIntWDate() {
+		return intWDate;
+	}
+	public void setIntWDate(int intWDate) {
+		this.intWDate = intWDate;
+	}
+	public int getPreIdx() {
+		return preIdx;
+	}
+	public void setPreIdx(int preIdx) {
+		this.preIdx = preIdx;
+	}
+	public int getNextIdx() {
+		return nextIdx;
+	}
+	public void setNextIdx(int nextIdx) {
+		this.nextIdx = nextIdx;
+	}
+	public String getPreTitle() {
+		return preTitle;
+	}
+	public void setPreTitle(String preTitle) {
+		this.preTitle = preTitle;
+	}
+	public String getNextTitle() {
+		return nextTitle;
+	}
+	public void setNextTitle(String nextTitle) {
+		this.nextTitle = nextTitle;
+	}
+	@Override
+	public String toString() {
+		return "BoardVO [idx=" + idx + ", nickName=" + nickName + ", title=" + title + ", email=" + email + ", homepage="
+				+ homepage + ", content=" + content + ", wDate=" + wDate + ", readNum=" + readNum + ", hostIp=" + hostIp
+				+ ", recommendNum=" + recommendNum + ", mid=" + mid + ", strWdate=" + strWdate + ", intWDate=" + intWDate
+				+ ", preIdx=" + preIdx + ", nextIdx=" + nextIdx + ", preTitle=" + preTitle + ", nextTitle=" + nextTitle + "]";
+	}
 }
