@@ -8,19 +8,17 @@ public class BoardVO {
 	private String homepage;
 	private String content;
 	private String wDate;
-	private int readNum;
-	private String hostIp;
-	private int recommendNum;
 	private String mid;
+	private String hostIp;
+	private int readNum;//조회수
+	private int recommendNum;//좋아요
+	private int noRecommendNum;//싫어요
+	private int replyNum;//댓글수
 	//날짜형식필드를 '문자'와 '숫자'로 나눔
 	private String strWdate;//문자형날짜
 	private int intWDate;//오늘날짜와 글쓴날짜의 시간차
-	//이전글, 다음글
-	private int preIdx;
-	private int nextIdx;
-	private String preTitle;
-	private String nextTitle;
-	
+	private int preIdx;//이전글의 목록 번호
+	private int nextIdx;//다음글의 목록 번호
 	public int getIdx() {
 		return idx;
 	}
@@ -63,11 +61,11 @@ public class BoardVO {
 	public void setwDate(String wDate) {
 		this.wDate = wDate;
 	}
-	public int getReadNum() {
-		return readNum;
+	public String getMid() {
+		return mid;
 	}
-	public void setReadNum(int readNum) {
-		this.readNum = readNum;
+	public void setMid(String mid) {
+		this.mid = mid;
 	}
 	public String getHostIp() {
 		return hostIp;
@@ -75,17 +73,29 @@ public class BoardVO {
 	public void setHostIp(String hostIp) {
 		this.hostIp = hostIp;
 	}
+	public int getReadNum() {
+		return readNum;
+	}
+	public void setReadNum(int readNum) {
+		this.readNum = readNum;
+	}
 	public int getRecommendNum() {
 		return recommendNum;
 	}
 	public void setRecommendNum(int recommendNum) {
 		this.recommendNum = recommendNum;
 	}
-	public String getMid() {
-		return mid;
+	public int getNoRecommendNum() {
+		return noRecommendNum;
 	}
-	public void setMid(String mid) {
-		this.mid = mid;
+	public void setNoRecommendNum(int noRecommendNum) {
+		this.noRecommendNum = noRecommendNum;
+	}
+	public int getReplyNum() {
+		return replyNum;
+	}
+	public void setReplyNum(int replyNum) {
+		this.replyNum = replyNum;
 	}
 	public String getStrWdate() {
 		return strWdate;
@@ -111,23 +121,11 @@ public class BoardVO {
 	public void setNextIdx(int nextIdx) {
 		this.nextIdx = nextIdx;
 	}
-	public String getPreTitle() {
-		return preTitle;
-	}
-	public void setPreTitle(String preTitle) {
-		this.preTitle = preTitle;
-	}
-	public String getNextTitle() {
-		return nextTitle;
-	}
-	public void setNextTitle(String nextTitle) {
-		this.nextTitle = nextTitle;
-	}
 	@Override
 	public String toString() {
 		return "BoardVO [idx=" + idx + ", nickName=" + nickName + ", title=" + title + ", email=" + email + ", homepage="
-				+ homepage + ", content=" + content + ", wDate=" + wDate + ", readNum=" + readNum + ", hostIp=" + hostIp
-				+ ", recommendNum=" + recommendNum + ", mid=" + mid + ", strWdate=" + strWdate + ", intWDate=" + intWDate
-				+ ", preIdx=" + preIdx + ", nextIdx=" + nextIdx + ", preTitle=" + preTitle + ", nextTitle=" + nextTitle + "]";
+				+ homepage + ", content=" + content + ", wDate=" + wDate + ", mid=" + mid + ", hostIp=" + hostIp + ", readNum="
+				+ readNum + ", recommendNum=" + recommendNum + ", noRecommendNum=" + noRecommendNum + ", replyNum=" + replyNum
+				+ ", strWdate=" + strWdate + ", intWDate=" + intWDate + ", preIdx=" + preIdx + ", nextIdx=" + nextIdx + "]";
 	}
 }
