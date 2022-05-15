@@ -83,6 +83,7 @@ public class BoardDAO {
 		}
 		return sqlInterval;
 	}
+	
 	//게시판 목록 조회-검색조건
 	//select *, (select count(*) from boardreply where boardIdx = board.idx) as replyCnt --이큐조인
 	//from board
@@ -136,15 +137,8 @@ public class BoardDAO {
 		return vos;
 	}
 	
-	/**
-	 * 게시글 조회
-	 * @param idx 게시글 번호
-	 * @return BoardVO
-	 * 
-	 * -document작업 API형상화를 위한 주석-
-	 */
+	//게시글 조회
 	public BoardVO search(int idx) {
-		vo = null;//vo를 request에 들고 다닐 때(jsp:useBean입력등) null초기화 필요
 		try {
 			sql = "SELECT "
 					+ "		IDX, "
@@ -189,7 +183,47 @@ public class BoardDAO {
 		}
 		return vo;
 	}
-
+	
+	//회원의 방명록에 올린 글 수
+	public int searchBoardWriteCnt(String mid, String nickname) {
+		int cnt = 0;
+		try {
+			sql = "select count(mid) as count from board where mid = ? and nickName = ? ";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, mid);
+			pstmt.setString(2, nickname);
+			rs = pstmt.executeQuery();
+			rs.next(); //count()는 데이타가 없으면 '0'값을 취득하면서 rs도 같이 리턴하므로, 레코드를 읽는 목적으로 rs.next()사용
+			cnt = rs.getInt("count"); 
+		} catch (SQLException e) {
+			System.out.println("SQL 에러 : " + e.getMessage());
+		} finally {
+			instance.pstmtClose();
+			instance.rsClose();
+		}
+		return cnt;
+	}
+	
+	//회원의 방명록에 올린 글 수
+	public int searchBoardreplyWriteCnt(String mid, String nickname) {
+		int cnt = 0;
+		try {
+			sql = "select count(mid) as count from boardreply where mid = ? and nickName = ? ";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, mid);
+			pstmt.setString(2, nickname);
+			rs = pstmt.executeQuery();
+			rs.next(); //count()는 데이타가 없으면 '0'값을 취득하면서 rs도 같이 리턴하므로, 레코드를 읽는 목적으로 rs.next()사용
+			cnt = rs.getInt("count"); 
+		} catch (SQLException e) {
+			System.out.println("SQL 에러 : " + e.getMessage());
+		} finally {
+			instance.pstmtClose();
+			instance.rsClose();
+		}
+		return cnt;
+	}
+	
 	//게시글 등록
 	public int insert(BoardVO vo) {
 		int res = 0;
