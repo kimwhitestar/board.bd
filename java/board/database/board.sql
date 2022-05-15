@@ -33,22 +33,22 @@ insert into board values (default, '박김이5', '게시판5', 'pkl5@naver.com',
 'http://naver.com/pkl5', '게시판 테스트5', '2022-03-12', 'pkl5', 'localhost', default, default, default, default);
 insert into board values (default, '박김이6', '게시판6', 'pkl6@naver.com',                   
 'http://naver.com/pkl6', '게시판 테스트6', '2022-04-11', 'pkl6', 'localhost', default, default, default, default);
-insert into board values (default, '박김이7', '게시판7', 'pkl7@naver.com',                   
-'http://naver.com/pkl7', '게시판 테스트7', '2022-04-11', 'pkl7', 'localhost', default, default, default, default);
-insert into board values (default, '박김이8', '게시판8', 'pkl8@naver.com',                   
-'http://naver.com/pkl8', '게시판 테스트8', '2022-05-01', 'pkl8', 'localhost', default, default, default, default);
-insert into board values (default, '박김이9', '게시판9', 'pkl9@naver.com',                   
-'http://naver.com/pkl9', '게시판 테스트9', '2022-05-05', 'pkl9', 'localhost', default, default, default, default);
-insert into board values (default, '박김이10', '게시판10', 'pkl10@naver.com', 
-'http://naver.com/pkl10', '게시판 테스트10', '2022-05-05', 'pkl10', 'localhost', default, default, default, default);
-insert into board values (default, '박김이11', '게시판11', 'pkl11@naver.com',                
-'http://naver.com/pkl11', '게시판 테스트11', '2022-05-11', 'pkl11', 'localhost', default, default, default, default);
-insert into board values (default, '박김이12', '게시판12', 'pkl12@naver.com',                
-'http://naver.com/pkl12', '게시판 테스트12', '2022-05-12', 'pkl12', 'localhost', default, default, default, default);
-insert into board values (default, '박김이13', '게시판13', 'pkl13@naver.com',                
-'http://naver.com/pkl13', '게시판 테스트13', '2022-05-13', 'pkl13', 'localhost', default, default, default, default);
-insert into board values (default, '박김이15', '게시판15', 'pkl15@naver.com',                
-'http://naver.com/pkl15', '게시판 테스트15', '2022-05-15', 'pkl15', 'localhost', default, default, default, default);
+insert into board values (default, '박김이2', '게시판7', 'pkl2@naver.com',                   
+'http://naver.com/pkl2', '게시판 테스트7', '2022-04-11', 'pkl2', 'localhost', default, default, default, default);
+insert into board values (default, '박김이1', '게시판8', 'pkl1@naver.com',                   
+'http://naver.com/pkl1', '게시판 테스트8', '2022-05-01', 'pkl1', 'localhost', default, default, default, default);
+insert into board values (default, '박김이2', '게시판9', 'pkl2@naver.com',                   
+'http://naver.com/pkl2', '게시판 테스트9', '2022-05-05', 'pkl2', 'localhost', default, default, default, default);
+insert into board values (default, '박김이1', '게시판10', 'pkl1@naver.com', 
+'http://naver.com/pkl1', '게시판 테스트10', '2022-05-05', 'pkl1', 'localhost', default, default, default, default);
+insert into board values (default, '박김이5', '게시판11', 'pkl5@naver.com',                
+'http://naver.com/pkl5', '게시판 테스트11', '2022-05-11', 'pkl5', 'localhost', default, default, default, default);
+insert into board values (default, '박김이5', '게시판12', 'pkl5@naver.com',                
+'http://naver.com/pkl5', '게시판 테스트12', '2022-05-12', 'pkl5', 'localhost', default, default, default, default);
+insert into board values (default, '박김이5', '게시판13', 'pkl5@naver.com',                
+'http://naver.com/pkl5', '게시판 테스트13', '2022-05-13', 'pkl5', 'localhost', default, default, default, default);
+insert into board values (default, '박김이1', '게시판15', 'pkl1@naver.com',                
+'http://naver.com/pkl1', '게시판 테스트15', '2022-05-15', 'pkl1', 'localhost', default, default, default, default);
 
 select * from board order by idx desc
 /*
@@ -62,4 +62,5 @@ select if('하나', '1', '하나')
 select case recommendNum when 0 then 0 else recommendNum -1 end from board
 select case noRecommendNum when 0 then 0 else noRecommendNum -1 end from board
 
-
+select count(mid) as count from board where mid = '' and nickName = '' 
+select count(mid) as count from boardreply where mid = '' and nickName = '' 
