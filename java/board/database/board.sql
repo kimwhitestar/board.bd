@@ -64,3 +64,5 @@ select case noRecommendNum when 0 then 0 else noRecommendNum -1 end from board
 
 select count(mid) as count from board where mid = '' and nickName = '' 
 select count(mid) as count from boardreply where mid = '' and nickName = '' 
+
+update board set readNum = readNum + 1 where idx = 16

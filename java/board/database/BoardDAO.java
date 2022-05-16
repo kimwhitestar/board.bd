@@ -36,8 +36,8 @@ public class BoardDAO {
 				sql += addPrepareSQL2;
 			}
 			pstmt = conn.prepareStatement(sql);
-			if(isExistSearchCondition) pstmt.setInt(++prepareIdx, term);
-			if(isExistInterval) pstmt.setString(term, searchConditionValue);
+			if(isExistSearchCondition) pstmt.setString(++prepareIdx, "%" + searchConditionValue + "%");
+			if(isExistInterval) pstmt.setInt(++prepareIdx, term);
 			rs = pstmt.executeQuery();
 			rs.next(); //ResultSet레코드움직이기(count함수는 무조건 0값조차 가져옴)
 			totRecCnt = rs.getInt("totRecCnt");
@@ -110,6 +110,8 @@ public class BoardDAO {
 			pstmt = conn.prepareStatement(sql);
 			if (isExistSearchCondition) pstmt.setString(++prepareIdx, "%"+searchConditionValue+"%");
 			if (isExistInterval) pstmt.setInt(++prepareIdx, term);
+			pstmt.setInt(++prepareIdx, startIndexNo);
+			pstmt.setInt(++prepareIdx, pageSize);
 			rs = pstmt.executeQuery();
 			while (rs.next()) {
 				vo = new BoardVO();
@@ -184,7 +186,7 @@ public class BoardDAO {
 		return vo;
 	}
 	
-	//회원의 방명록에 올린 글 수
+	//회원의 게시판에 올린 글 수
 	public int searchBoardWriteCnt(String mid, String nickname) {
 		int cnt = 0;
 		try {
@@ -204,7 +206,7 @@ public class BoardDAO {
 		return cnt;
 	}
 	
-	//회원의 방명록에 올린 글 수
+	//회원의 댓글에 올린 글 수
 	public int searchBoardreplyWriteCnt(String mid, String nickname) {
 		int cnt = 0;
 		try {
@@ -228,15 +230,15 @@ public class BoardDAO {
 	public int insert(BoardVO vo) {
 		int res = 0;
 		try {
-			sql = "insert into board values ( default, ?, ?, ?, ?, ?, default, default, ?, default, ? )";
+			sql = "insert into board values ( default, ?, ?, ?, ?, ?, default, ?, ?, default, default, default, default )";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, vo.getNickName());
 			pstmt.setString(2, vo.getTitle());
 			pstmt.setString(3, vo.getEmail());
 			pstmt.setString(4, vo.getHomepage());
 			pstmt.setString(5, vo.getContent());
-			pstmt.setString(6, vo.getHostIp());
-			pstmt.setString(7, vo.getMid());
+			pstmt.setString(6, vo.getMid());
+			pstmt.setString(7, vo.getHostIp());
 			res = pstmt.executeUpdate();
 		} catch(SQLException e) {
 			System.out.println("SQL 에러 : " + e.getMessage());
@@ -250,7 +252,7 @@ public class BoardDAO {
 	public int updateReadNum(int idx) {
 		int res = 0;
 		try {
-			sql = "update into board set readNum = readNum + 1 where idx = ? ";
+			sql = "update board set readNum = readNum + 1 where idx = ? ";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, idx);
 			res = pstmt.executeUpdate();
@@ -266,11 +268,11 @@ public class BoardDAO {
 	public int updateRecommendNum(int idx) {
 		int res = 0;
 		try {
-			sql = "update into"
+			sql = "update "
 					+ "	board "
 					+ "set"
 					+ "	recommendNum = recommendNum + 1 ," //좋아요 1회 증가
-					+ "	case noRecommendNum when 0 then 0 else noRecommendNum -1 end " //싫어요 1회 감소
+					+ "	noRecommendNum = case noRecommendNum when 0 then 0 else noRecommendNum -1 end " //싫어요 1회 감소
 					+ "where "
 					+ "	idx = ? ";
 			pstmt = conn.prepareStatement(sql);
@@ -288,11 +290,11 @@ public class BoardDAO {
 	public int updateNoRecommendNum(int idx) {
 		int res = 0;
 		try {
-			sql = "update into"
+			sql = "update "
 					+ "	board "
 					+ "set"
 					+ "	noRecommendNum = noRecommendNum + 1 ," //싫어요 1회 증가
-					+ "	case recommendNum when 0 then 0 else recommendNum -1 end " //좋아요 1회 감소
+					+ "	recommendNum = case recommendNum when 0 then 0 else recommendNum -1 end " //좋아요 1회 감소
 					+ "where "
 					+ "	idx = ? ";
 			pstmt = conn.prepareStatement(sql);
@@ -305,12 +307,30 @@ public class BoardDAO {
 		}
 		return res;
 	}
+	
+	//게시글 좋아요 총횟수 조회
+	public int searchBoardRecommendNum(int idx) {
+		int recommendNum = -1;
+		try {
+			sql = "select recommendNum from board where idx = ? ";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, idx);
+			rs = pstmt.executeQuery();
+			if(rs.next()) recommendNum = rs.getInt("recommendNum"); 
+		} catch (SQLException e) {
+			System.out.println("SQL 에러 : " + e.getMessage());
+		} finally {
+			instance.pstmtClose();
+			instance.rsClose();
+		}
+		return recommendNum;
+	}
 
 	//게시글 수정
 	public int update(BoardVO vo) {
 		int res = 0;
 		try {
-			sql = "update into board set title = ?, email = ?, homepage = ?, content = ?, hostIp = ? where idx = ? and mid = ?";
+			sql = "update board set title = ?, email = ?, homepage = ?, content = ?, hostIp = ? where idx = ? and mid = ?";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, vo.getTitle());
 			pstmt.setString(2, vo.getEmail());
