@@ -48,7 +48,7 @@
     </div>
     <div class="form-group">
       <label for="homepage">Homepage</label>
-      <input type="text" class="form-control" name="homepage" id="homepage" placeholder="http://는 빼고 Homepage를 입력하세요." onblur="checkHomepage()"/>
+      <input type="text" class="form-control" name="homepage" id="homepage" <c:if test="${!empty homepage}"> value="${homepage}" </c:if> placeholder="http://는 빼고 Homepage를 입력하세요." onblur="checkHomepage()"/>
       <div class="invalid-feedback">홈페이지는 선택 입력사항입니다.</div>
     </div>
     <div class="form-group">

@@ -34,7 +34,7 @@
 <p><br></p>
 <div class="container">
   <form name="updateForm" method="post" action="${ctxPath}/boardUpdateOk.bd" class="was-validated">
-    <h2>게시판 글쓰기</h2>
+    <h2>게 시 글 수 정</h2>
     <div class="form-group">
       <label for="title">제목</label>
       <input type="text" class="form-control" name="title" id="title" value="${vo.title}" <c:if test="${empty vo.title}"> placeholder="제목을 입력하세요." </c:if> required autofocus/>
@@ -64,8 +64,6 @@
 	    <button type="button" class="btn btn-secondary" onclick="location.href='${ctxPath}/boardList.bd';">돌아가기</button>
     </div>
     <input type="hidden" name="idx" value="${vo.idx}" />
-    <input type="hidden" name="pageNo" value="${pageNo}" />
-    <input type="hidden" name="pageSize" value="${pageSize}" />
   </form>
 </div>
     <%@ include file="/include/footer.jsp" %>
